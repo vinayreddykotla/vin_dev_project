@@ -1,0 +1,3 @@
+.terraform/*
+
+hcl_terraform/.terraform/

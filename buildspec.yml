@@ -1,0 +1,28 @@
+version: 0.2 
+phases:
+  install:
+    runtime-versions:
+      java : corretto11
+  pre_build:
+    commands:
+      - echo "pre-build started"
+      - pwd
+      - ls -lrta
+      - echo "we are scanning te source code.."
+      - mvn verify sonar:sonar
+      #- cd $CODEBUILD_SRC_DIR
+      - echo "scanning has been completed and reports were published to sonar website"
+  build:
+    commands:
+      - echo Build started on `date`
+      #- mvn clean validate compile test install verify package
+      - cp -pvr settings.xml /root/.m2/settings.xml
+      - mvn deploy
+      - ls -lrta
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    #- target/staragile-1.0.0.war
+    - '**/*'
